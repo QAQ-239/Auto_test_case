@@ -1,0 +1,55 @@
+{
+  "suite_id": "calc-basic-001",
+  "suite_name": "Calculator Basic Operations",
+  "description": "验证基础计算器 API 在加减乘除和异常场景下的正确性。",
+  "context": {
+    "target": "http://localhost:5000/api/calc",
+    "language": "python",
+    "framework": "pytest",
+    "entry_point": "tests/test_calc_api.py"
+  },
+  "fixtures": [
+    {
+      "name": "client",
+      "type": "http",
+      "details": {
+        "base_url": "http://localhost:5000/api"
+      }
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "TC001",
+      "title": "加法接口返回正确结果",
+      "priority": "P0",
+      "steps": [
+        "调用 POST /calc 接口，传入 operation=add, operands=[2, 3]",
+        "校验响应状态码为 200",
+        "校验响应 JSON 中 result 字段为 5"
+      ],
+      "expected_result": "接口返回 result=5 且 status=200"
+    },
+    {
+      "id": "TC002",
+      "title": "除法接口处理除以零",
+      "priority": "P0",
+      "steps": [
+        "调用 POST /calc 接口，传入 operation=divide, operands=[10, 0]",
+        "校验响应状态码为 400",
+        "校验响应 JSON 中 error 字段包含 divide by zero"
+      ],
+      "expected_result": "接口返回错误提示 divide by zero 且状态码为 400"
+    },
+    {
+      "id": "TC003",
+      "title": "乘法接口性能基线",
+      "priority": "P1",
+      "steps": [
+        "调用 POST /calc 接口，传入 operation=multiply, operands=[10, 25]",
+        "校验响应时间不超过 50ms",
+        "校验结果为 250"
+      ],
+      "expected_result": "接口快速返回 result=250，耗时 <=50ms"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "suite_id": "example-001",
+  "suite_name": "Example Test Suite",
+  "description": "演示自动修复功能的示例测试套件",
+  "context": {
+    "target": "http://localhost:5000/api/calc",
+    "language": "python",
+    "framework": "pytest",
+    "entry_point": "tests/test_example.py"
+  },
+  "fixtures": [
+    {
+      "name": "client",
+      "type": "http",
+      "details": {
+        "base_url": "http://localhost:5000/api"
+      }
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "TC001",
+      "title": "测试计算器加法",
+      "priority": "P0",
+      "steps": [
+        "调用 POST /calc 接口，传入 operation=add, operands=[2, 3]",
+        "校验响应状态码为 200",
+        "校验响应 JSON 中 result 字段为 5"
+      ],
+      "expected_result": "接口返回 result=5 且 status=200"
+    }
+  ]
+}

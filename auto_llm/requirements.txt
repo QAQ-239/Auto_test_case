@@ -1,0 +1,9 @@
+pytest>=7.0
+pytest-rerunfailures>=10.3
+pytest-json-report>=1.5
+pytest-cov>=4.0
+pytest-benchmark>=4.0
+pytest-timeout>=2.1
+pytest-xdist>=3.0
+requests>=2.31
+gradio>=4.0

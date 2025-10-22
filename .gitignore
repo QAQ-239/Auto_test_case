@@ -1,0 +1,46 @@
+# ---- Python 编译缓存 ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ---- 虚拟环境 ----
+.venv/
+venv/
+env/
+autotest/        # 如果你虚拟环境就在项目里，写真实目录名
+
+# ---- IDE / 编辑器配置 ----
+.vscode/
+.idea/
+
+# ---- 日志 / 运行输出 ----
+*.log
+logs/
+*.out
+
+# ---- 本地数据 / 临时文件 ----
+*.tmp
+*.swp
+*.bak
+
+# ---- 大文件/中间产物 ----
+*.ckpt
+*.pt
+*.pth
+*.tar.gz
+*.zip
+
+# ---- Python 包缓存 ----
+*.egg-info/
+dist/
+build/
+
+# ---- Jupyter / Notebook 产物 ----
+.ipynb_checkpoints/
+
+# 忽略的文件
+
+AGENTS.md
+kaifa.md
+pytestDemo

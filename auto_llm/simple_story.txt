@@ -1,0 +1,13 @@
+【用户故事】
+我们正在开发一个纯计算服务，提供四个 JSON 接口：
+- POST /calc/add：请求体包含 a、b，返回 a+b
+- POST /calc/sub：请求体包含 a、b，返回 a-b
+- POST /calc/mul：请求体包含 a、b，返回 a*b
+- POST /calc/div：请求体包含 a、b，返回 a/b；当 b 为 0 时返回错误提示“divide by zero”
+
+测试目标：
+1. 验证每个接口在正常输入下返回正确结果。
+2. 验证除法接口在 b=0 时返回错误信息。
+3. 断言响应为 JSON，并包含 result 或 error 字段。
+
+仅验证本地加减乘除函数，不需要任何 HTTP 通信
