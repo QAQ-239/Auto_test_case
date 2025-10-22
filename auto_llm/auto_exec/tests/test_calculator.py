@@ -1,38 +1,46 @@
 import pytest
 
-# 定义计算器函数
-def calculator_function(a, b, operation):
-    if operation == 'add':
-        return a + b
-    elif operation == 'subtract':
-        return a - b
-    elif operation == 'multiply':
-        return a * b
-    elif operation == 'divide':
-        return a / b
-    else:
-        raise ValueError("Invalid operation")
-
-# 定义 fixture
+# 定义固定装置
 @pytest.fixture
-def calculator_fixture():
-    return calculator_function
+def calc_fixture():
+    class Calculator:
+        def add(self, a, b):
+            return a + b
 
-# 定义测试用例
-def test_addition(calculator_fixture):
-    # 步骤 1
-    result = calculator_fixture(5, 3, 'add')
-    # 步骤 2
-    assert result == 8, "Expected result is 8"
+        def subtract(self, a, b):
+            return a - b
 
-def test_subtraction(calculator_fixture):
-    result = calculator_fixture(5, 3, 'subtract')
-    assert result == 2, "Expected result is 2"
+        def multiply(self, a, b):
+            return a * b
 
-def test_multiplication(calculator_fixture):
-    result = calculator_fixture(5, 3, 'multiply')
-    assert result == 15, "Expected result is 15"
+        def divide(self, a, b):
+            if b == 0:
+                raise ZeroDivisionError('division by zero')
+            return a / b
+    return Calculator()
 
-def test_division(calculator_fixture):
-    result = calculator_fixture(6, 3, 'divide')
-    assert result == 2, "Expected result is 2"
+# 测试用例 1：加法测试
+def test_addition(calc_fixture):
+    result = calc_fixture.add(1, 2)
+    assert result == 3, "加法测试失败"
+
+# 测试用例 2：减法测试
+def test_subtraction(calc_fixture):
+    result = calc_fixture.subtract(5, 3)
+    assert result == 2, "减法测试失败"
+
+# 测试用例 3：乘法测试
+def test_multiplication(calc_fixture):
+    result = calc_fixture.multiply(4, 5)
+    assert result == 20, "乘法测试失败"
+
+# 测试用例 4：除法测试
+def test_division(calc_fixture):
+    result = calc_fixture.divide(10, 2)
+    assert result == 5, "除法测试失败"
+
+# 测试用例 5：除以零测试
+def test_division_by_zero(calc_fixture):
+    with pytest.raises(ZeroDivisionError) as e:
+        calc_fixture.divide(1, 0)
+    assert str(e.value) == 'division by zero', "除以零测试失败"
