@@ -10,8 +10,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -19,13 +18,19 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r auto_llm/requirements.txt
+          pip install -r ${{ env.REQUIREMENTS_FILE }}
+        env:
+          REQUIREMENTS_FILE: ${{ env.REQUIREMENTS_FILE }}
       - name: Run automated pipeline
         run: |
-          python -m pytest auto_llm/auto_exec/tests/test_generated.py
+          python ${{ env.TEST_COMMAND }}
+        env:
+          TEST_COMMAND: ${{ env.TEST_COMMAND }}
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: auto-llm-artifacts
-          path: /home/Newdisk2/aofanyu/project/autotask/auto_llm/artifacts
+          path: ${{ env.ARTIFACTS_PATH }}
+        env:
+          ARTIFACTS_PATH: ${{ env.ARTIFACTS_PATH }}
