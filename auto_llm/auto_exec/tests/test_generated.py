@@ -1,45 +1,45 @@
-# 导入必要的库
 import pytest
+import json
 
-# 定义测试函数
+# 定义计算函数
+def add(a, b):
+    return {'result': a + b}
+
+def sub(a, b):
+    return {'result': a - b}
+
+def mul(a, b):
+    return {'result': a * b}
+
+def div(a, b):
+    if b == 0:
+        return {'error': 'divide by zero'}
+    return {'result': a / b}
+
+# 定义测试用例
 def test_addition():
-    # 定义加法函数
-    def add(a, b):
-        return a + b
-
-    # 执行加法操作并断言结果
-    result = add(1, 2)
-    assert result == 3, "加法测试失败"
+    result = add(5, 3)
+    assert 'result' in result
+    assert result['result'] == 8
 
 def test_subtraction():
-    # 定义减法函数
-    def sub(a, b):
-        return a - b
-
-    # 执行减法操作并断言结果
-    result = sub(5, 2)
-    assert result == 3, "减法测试失败"
+    result = sub(5, 3)
+    assert 'result' in result
+    assert result['result'] == 2
 
 def test_multiplication():
-    # 定义乘法函数
-    def mul(a, b):
-        return a * b
-
-    # 执行乘法操作并断言结果
-    result = mul(3, 2)
-    assert result == 6, "乘法测试失败"
+    result = mul(5, 3)
+    assert 'result' in result
+    assert result['result'] == 15
 
 def test_division():
-    # 定义除法函数
-    def div(a, b):
-        if b == 0:
-            raise ZeroDivisionError("除数不能为零")
-        return a / b
+    result = div(6, 3)
+    assert 'result' in result
+    assert result['result'] == 2
 
-    # 执行除法操作并断言结果
-    result = div(6, 2)
-    assert result == 3, "除法测试失败"
+    result = div(6, 0)
+    assert 'error' in result
+    assert result['error'] == 'divide by zero'
 
-# 定义主函数
 if __name__ == "__main__":
-    pytest.main(["-q", "tests/test_generated.py"])
+    pytest.main(['-q', 'test_generated.py'])
