@@ -1,45 +1,28 @@
 import pytest
 import json
 
-# 定义计算函数
-def add(a, b):
-    return {'result': a + b}
+# 自包含的数字奇偶判断函数
+def check_parity(num):
+    if isinstance(num, int):
+        if num % 2 == 0:
+            return {'result': 'even'}
+        else:
+            return {'result': 'odd'}
+    else:
+        return {'error': 'invalid integer input'}
 
-def sub(a, b):
-    return {'result': a - b}
+# 测试用例 1
+def test_even_input():
+    assert check_parity(8) == {'result': 'even'}
 
-def mul(a, b):
-    return {'result': a * b}
+# 测试用例 2
+def test_odd_input():
+    assert check_parity(11) == {'result': 'odd'}
 
-def div(a, b):
-    if b == 0:
-        return {'error': 'divide by zero'}
-    return {'result': a / b}
+# 测试用例 3
+def test_non_integer_input():
+    assert check_parity(3.2) == {'error': 'invalid integer input'}
 
-# 定义测试用例
-def test_addition():
-    result = add(5, 3)
-    assert 'result' in result
-    assert result['result'] == 8
-
-def test_subtraction():
-    result = sub(5, 3)
-    assert 'result' in result
-    assert result['result'] == 2
-
-def test_multiplication():
-    result = mul(5, 3)
-    assert 'result' in result
-    assert result['result'] == 15
-
-def test_division():
-    result = div(6, 3)
-    assert 'result' in result
-    assert result['result'] == 2
-
-    result = div(6, 0)
-    assert 'error' in result
-    assert result['error'] == 'divide by zero'
-
-if __name__ == "__main__":
-    pytest.main(['-q', 'test_generated.py'])
+# 测试用例 4
+def test_non_integer_string_input():
+    assert check_parity('abc') == {'error': 'invalid integer input'}
