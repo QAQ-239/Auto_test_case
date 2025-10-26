@@ -1,40 +1,36 @@
 import pytest
 from datetime import datetime
 
-# 定义测试用例
-def test_compare_same_month():
-    """
-    测试用例：[1] Compare two identical months (P0)
-    """
-    assert compare_months('2025-10', '2025-10') == True
-
-def test_compare_different_months():
-    """
-    测试用例：[2] Compare two different months (P0)
-    """
-    assert compare_months('2025-10', '2025-11') == False
-
-def test_compare_invalid_date():
-    """
-    测试用例：[3] Compare a month with an invalid date (P1)
-    """
-    with pytest.raises(ValueError) as excinfo:
-        compare_months('2025-13', '2025-10')
-    assert str(excinfo.value) == 'invalid date format (must be YYYY-MM)'
-
-# 定义比较月份的函数
 def compare_months(date1, date2):
     """
-    比较两个日期是否为同一个月。
-    如果日期格式不正确，则抛出 ValueError。
+    Compare two input dates
     """
     try:
-        d1 = datetime.strptime(date1, '%Y-%m')
-        d2 = datetime.strptime(date2, '%Y-%m')
+        date_format = "%Y-%m"
+        datetime.strptime(date1, date_format)
+        datetime.strptime(date2, date_format)
     except ValueError:
-        raise ValueError('invalid date format (must be YYYY-MM)')
-    return d1.month == d2.month and d1.year == d2.year
+        return 'invalid date format (must be YYYY-MM)'
 
-# 运行测试
-if __name__ == '__main__':
-    pytest.main(['-q', __file__])
+    return date1[:7] == date2[:7]
+
+def test_same_month():
+    """
+    Test if two input dates are the same month
+    """
+    result = compare_months('2025-10', '2025-10')
+    assert result == True
+
+def test_different_month():
+    """
+    Test if two input dates are not the same month
+    """
+    result = compare_months('2025-10', '2025-11')
+    assert result == False
+
+def test_invalid_format():
+    """
+    Test with invalid date format
+    """
+    result = compare_months('2025-13', '2025-10')
+    assert result == 'invalid date format (must be YYYY-MM)'
