@@ -1,28 +1,38 @@
+# 导入所需的模块
 import pytest
 import json
 
-# 自包含的数字奇偶判断函数
-def check_parity(num):
-    if isinstance(num, int):
-        if num % 2 == 0:
-            return {'result': 'even'}
-        else:
-            return {'result': 'odd'}
+# 定义测试套件 ID 和名称
+suite_id = "1"
+suite_name = "Numeric Comparison Suite"
+
+# 定义测试用例
+test_cases = [
+    {"name": "Test Greater (P0)", "input": {"a": 5, "b": 3}, "expected": {"result": "greater"}},
+    {"name": "Test Less (P0)", "input": {"a": 2, "b": 5}, "expected": {"result": "less"}},
+    {"name": "Test Equal (P0)", "input": {"a": 2, "b": 2}, "expected": {"result": "equal"}},
+    {"name": "Test Non-numeric input (P0)", "input": {"a": 'abc', "b": 2}, "expected": {"error": "inputs must be numbers"}},
+]
+
+# 定义 compare_numbers 函数
+def compare_numbers(a, b):
+    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
+        return {"error": "inputs must be numbers"}
+    elif a > b:
+        return {"result": "greater"}
+    elif a < b:
+        return {"result": "less"}
     else:
-        return {'error': 'invalid integer input'}
+        return {"result": "equal"}
 
-# 测试用例 1
-def test_even_input():
-    assert check_parity(8) == {'result': 'even'}
-
-# 测试用例 2
-def test_odd_input():
-    assert check_parity(11) == {'result': 'odd'}
-
-# 测试用例 3
-def test_non_integer_input():
-    assert check_parity(3.2) == {'error': 'invalid integer input'}
-
-# 测试用例 4
-def test_non_integer_string_input():
-    assert check_parity('abc') == {'error': 'invalid integer input'}
+# 定义测试函数
+@pytest.mark.parametrize("test_case", test_cases)
+def test_numeric_comparison(test_case):
+    # 调用函数
+    result = compare_numbers(test_case["input"]["a"], test_case["input"]["b"])
+    
+    # 检查结果
+    if "error" in test_case["expected"]:
+        assert result["error"] == test_case["expected"]["error"]
+    else:
+        assert result == test_case["expected"]
