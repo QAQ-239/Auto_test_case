@@ -1,38 +1,33 @@
-# 导入所需的模块
 import pytest
 import json
 
-# 定义测试套件 ID 和名称
-suite_id = "1"
-suite_name = "Numeric Comparison Suite"
+# 定义用户信息
+valid_user = {"account": "user123", "password": "pass456"}
+invalid_user = {"account": "user456", "password": "wrong_password"}
+empty_user = {"account": "", "password": ""}
+
+
+# 定义本地函数来验证用户信息
+def validate_user(user):
+    if user['account'] == "" or user['password'] == "":
+        return {"error": "account or password cannot be empty"}
+    elif user['account'] == "user123" and user['password'] == "pass456":
+        return {"result": True}
+    else:
+        return {"result": False}
+
 
 # 定义测试用例
-test_cases = [
-    {"name": "Test Greater (P0)", "input": {"a": 5, "b": 3}, "expected": {"result": "greater"}},
-    {"name": "Test Less (P0)", "input": {"a": 2, "b": 5}, "expected": {"result": "less"}},
-    {"name": "Test Equal (P0)", "input": {"a": 2, "b": 2}, "expected": {"result": "equal"}},
-    {"name": "Test Non-numeric input (P0)", "input": {"a": 'abc', "b": 2}, "expected": {"error": "inputs must be numbers"}},
-]
+def test_valid_login():
+    response = validate_user(valid_user)
+    assert response['result'] == True
 
-# 定义 compare_numbers 函数
-def compare_numbers(a, b):
-    if not isinstance(a, (int, float)) or not isinstance(b, (int, float)):
-        return {"error": "inputs must be numbers"}
-    elif a > b:
-        return {"result": "greater"}
-    elif a < b:
-        return {"result": "less"}
-    else:
-        return {"result": "equal"}
 
-# 定义测试函数
-@pytest.mark.parametrize("test_case", test_cases)
-def test_numeric_comparison(test_case):
-    # 调用函数
-    result = compare_numbers(test_case["input"]["a"], test_case["input"]["b"])
-    
-    # 检查结果
-    if "error" in test_case["expected"]:
-        assert result["error"] == test_case["expected"]["error"]
-    else:
-        assert result == test_case["expected"]
+def test_invalid_login():
+    response = validate_user(invalid_user)
+    assert response['result'] == False
+
+
+def test_empty_account_or_password():
+    response = validate_user(empty_user)
+    assert response['error'] == "account or password cannot be empty"
