@@ -1,5 +1,5 @@
 yaml
-name: Login Authentication Suite
+name: AutoLLM Pipeline
 
 on:
   push:
@@ -11,20 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r auto_llm/requirements.txt
+          pip install -r ${{ env.REQUIREMENTS_FILE }}
+        env:
+          REQUIREMENTS_FILE: ${{ env.REQUIREMENTS_FILE }}
       - name: Run automated pipeline
         run: |
-          python -m pytest auto_llm/auto_exec/tests/test_login.py
+          ${{ env.TEST_COMMAND }}
+        env:
+          TEST_COMMAND: ${{ env.TEST_COMMAND }}
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: auto-llm-artifacts
-          path: /home/Newdisk2/aofanyu/project/autotask/auto_llm/artifacts
+          path: ${{ env.ARTIFACTS_PATH }}
+        env:
+          ARTIFACTS_PATH: ${{ env.ARTIFACTS_PATH }}
