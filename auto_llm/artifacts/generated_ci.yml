@@ -10,27 +10,21 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python 3.10
+      - uses: actions/checkout@v3
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ${{ env.REQUIREMENTS_FILE }}
-        env:
-          REQUIREMENTS_FILE: ${{ env.REQUIREMENTS_FILE }}
+          pip install -r auto_llm/requirements.txt
       - name: Run automated pipeline
         run: |
-          ${{ env.TEST_COMMAND }}
-        env:
-          TEST_COMMAND: ${{ env.TEST_COMMAND }}
+          python -m pytest auto_llm/auto_exec/tests/test_integer_parity.py
       - name: Upload artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: auto-llm-artifacts
-          path: ${{ env.ARTIFACTS_PATH }}
-        env:
-          ARTIFACTS_PATH: ${{ env.ARTIFACTS_PATH }}
+          path: /home/Newdisk2/aofanyu/project/autotask/auto_llm/artifacts
