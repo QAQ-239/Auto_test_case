@@ -1,5 +1,5 @@
 yaml
-name: AutoLLM Pipeline
+name: Element Detection Suite
 
 on:
   push:
@@ -10,7 +10,8 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -20,12 +21,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ${{ env.requirements_file }}
         env:
-          requirements_file: ${{ env.requirements_file }}
+          requirements_file: ${{ env.entry_point }}/../../../auto_llm/requirements.txt
       - name: Run automated pipeline
         run: |
-          python ${{ env.test_command }}
+          ${{ env.test_command }}
         env:
-          test_command: ${{ env.test_command }}
+          test_command: python -m pytest ${{ env.entry_point }}
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -33,4 +34,4 @@ jobs:
           name: auto-llm-artifacts
           path: ${{ env.artifacts_path }}
         env:
-          artifacts_path: ${{ env.artifacts_path }}
+          artifacts_path: /home/Newdisk2/aofanyu/project/autotask/auto_llm/artifacts
