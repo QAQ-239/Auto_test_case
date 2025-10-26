@@ -18,19 +18,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ${{ env.REQUIREMENTS_FILE }}
-        env:
-          REQUIREMENTS_FILE: ${{ env.entry_point }}
+          pip install -r auto_llm/requirements.txt
       - name: Run automated pipeline
         run: |
-          ${{ env.test_command }}
-        env:
-          test_command: ${{ env.test_command }}
+          python -m pytest auto_llm/auto_exec/tests/test_month_comparison.py
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: auto-llm-artifacts
-          path: ${{ env.artifacts_path }}
-        env:
-          artifacts_path: ${{ env.artifacts_path }}
+          path: /home/Newdisk2/aofanyu/project/autotask/auto_llm/artifacts
