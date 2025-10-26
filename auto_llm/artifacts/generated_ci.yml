@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -19,13 +19,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ${{ github.workspace }}/auto_llm/requirements.txt
+          pip install -r auto_llm/requirements.txt
       - name: Run automated pipeline
         run: |
-          python -m pytest ${{ github.workspace }}/auto_llm/auto_exec/tests/test_substring_detection.py
+          python -m pytest auto_llm/auto_exec/tests/test_generated.py
       - name: Upload artifacts
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: auto-llm-artifacts
-          path: ${{ github.workspace }}/auto_llm/artifacts/
+          path: /home/Newdisk2/aofanyu/project/autotask/auto_llm/artifacts
