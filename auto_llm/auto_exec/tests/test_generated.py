@@ -1,29 +1,29 @@
 import pytest
 import json
 
-# 本地函数，用于检查输入值是否为数字
-def is_number(value):
-    if value is None:
-        return False
-    elif isinstance(value, (int, float)):
-        return True
+# 定义本地函数
+def is_even(num):
+    if isinstance(num, int):
+        if num % 2 == 0:
+            return {'result': 'even'}
+        else:
+            return {'result': 'odd'}
     else:
-        return False
+        return {'error': 'invalid integer input'}
 
-# 测试用例：正向测试 - 输入为数字 (P0)
-def test_positive_case():
-    value = 123
-    result = True
-    assert is_number(value) == result
+# 定义测试用例
+def test_even_input():
+    result = is_even(8)
+    assert result == {'result': 'even'}
 
-# 测试用例：异常处理 - 输入为 null (P0)
-def test_null_case():
-    value = None
-    result = False
-    assert is_number(value) == result
+def test_odd_input():
+    result = is_even(11)
+    assert result == {'result': 'odd'}
 
-# 测试用例：异常处理 - 输入为 undefined (P0)
-def test_undefined_case():
-    value = 'undefined'
-    result = False
-    assert is_number(value) == result
+def test_non_integer_input():
+    result = is_even(3.2)
+    assert result == {'error': 'invalid integer input'}
+
+# 运行测试
+if __name__ == "__main__":
+    pytest.main(["-q", "tests/test_generated.py"])
