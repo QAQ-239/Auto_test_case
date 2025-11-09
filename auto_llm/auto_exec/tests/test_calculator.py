@@ -1,14 +1,8 @@
-import pytest
+# 导入所需的库
+import unittest
+import json
 
-# 定义测试用例
-test_cases = [
-    ('add', 3, 5, {'result': 8}),
-    ('subtract', 10, 4, {'result': 6}),
-    ('multiply', 2, 9, {'result': 18}),
-    ('divide', 15, 3, {'result': 5}),
-]
-
-# 创建一个函数来模拟 calculator 模块的行为
+# 定义计算器函数
 def add(a, b):
     return a + b
 
@@ -20,20 +14,39 @@ def multiply(a, b):
 
 def divide(a, b):
     if b == 0:
-        raise ZeroDivisionError("division by zero")
-    else:
-        return a / b
+        raise ZeroDivisionError("divide by zero")
+    return a / b
 
-@pytest.mark.parametrize("func_name, a, b, expected", test_cases)
-def test_calculator_operations(func_name, a, b, expected):
-    """
-    测试计算器的加法、减法、乘法和除法操作。
-    """
-    func = globals()[func_name]
-    if func_name == 'divide' and b == 0:
-        with pytest.raises(ZeroDivisionError) as e:
-            func(a, b)
-        assert str(e.value) == "division by zero"
-    else:
-        result = func(a, b)
-        assert result == expected['result']
+# 定义测试类
+class CalculatorTest(unittest.TestCase):
+    def setUp(self):
+        # 设置测试固件
+        self.base_url = "http://localhost:8000/calculator"
+
+    def test_addition(self):
+        # 测试加法操作
+        result = add(5, 3)
+        self.assertEqual(result, 8)
+
+    def test_subtraction(self):
+        # 测试减法操作
+        result = subtract(5, 3)
+        self.assertEqual(result, 2)
+
+    def test_multiplication(self):
+        # 测试乘法操作
+        result = multiply(5, 3)
+        self.assertEqual(result, 15)
+
+    def test_division(self):
+        # 测试除法操作
+        result = divide(6, 3)
+        self.assertEqual(result, 2)
+
+    def test_division_by_zero(self):
+        # 测试除以零的情况
+        with self.assertRaises(ZeroDivisionError):
+            divide(6, 0)
+
+if __name__ == "__main__":
+    unittest.main()
